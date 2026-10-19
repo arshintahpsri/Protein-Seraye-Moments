@@ -1,0 +1,136 @@
+@import "tailwindcss";
+
+/* Font dipasang lewat npm (@fontsource) supaya tidak bergantung pada CDN */
+@import "@fontsource-variable/outfit";
+@import "@fontsource-variable/playfair-display";
+@import "@fontsource-variable/playfair-display/wght-italic.css";
+
+@source "../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php";
+@source "../../storage/framework/views/*.php";
+@source "../views/**/*.blade.php";
+@source "../js/**/*.js";
+
+/*
+ |--------------------------------------------------------------------------
+ | Design tokens — diambil dari Figma "Seraye Moments"
+ |--------------------------------------------------------------------------
+ | Nilai bertanda (≈) adalah estimasi dan belum ada padanannya di Figma
+ | (olive-deep & clay-deep = warna hover, tidak digambar di desain).
+ */
+@theme {
+    --font-serif: "Playfair Display Variable", "Playfair Display", Georgia, serif;
+    --font-sans: "Outfit Variable", "Outfit", ui-sans-serif, system-ui, sans-serif;
+
+    /* Permukaan */
+    --color-paper: #fbf9f6;
+    --color-sand: #f5f3f0;
+    --color-mist: #e4e2df;
+
+    /* Teks */
+    --color-ink: #1b1c1a;
+    --color-ink-soft: #44483f;
+
+    /* Merek */
+    --color-olive: #435a34;
+    --color-olive-deep: #364a2a; /* ≈ hover */
+    --color-moss: #5b734a; /* kartu Seraye for Humanity */
+    --color-clay: #7f5252;
+    --color-clay-deep: #6a4141; /* ≈ hover */
+
+    /* Chip */
+    --color-leaf-100: #d0ebb9;
+    --color-leaf-800: #0c2002;
+    --color-rose-100: #ffdad9;
+    --color-rose-800: #321112;
+    --color-honey-100: #ffe088;
+    --color-honey-800: #241a00;
+
+    --shadow-card: 0 1px 2px rgb(32 36 30 / 0.04), 0 8px 24px rgb(32 36 30 / 0.06);
+    --shadow-soft: 0 1px 8px rgb(32 36 30 / 0.04);
+
+    --container-page: 1360px;
+}
+
+@layer base {
+    html {
+        scroll-behavior: smooth;
+    }
+
+    [x-cloak] {
+        display: none !important;
+    }
+
+    body {
+        font-family: var(--font-sans);
+    }
+
+    :focus-visible {
+        outline: 2px solid var(--color-olive);
+        outline-offset: 2px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        html {
+            scroll-behavior: auto;
+        }
+        *,
+        *::before,
+        *::after {
+            animation-duration: 0.01ms !important;
+            transition-duration: 0.01ms !important;
+        }
+    }
+}
+
+@layer components {
+    /* Wadah halaman: max 1360px, gutter 24px (mobile) → 48px (desktop) */
+    .page {
+        @apply mx-auto w-full max-w-[1360px] px-6 lg:px-12;
+    }
+
+    /* Tombol */
+    .btn {
+        @apply inline-flex items-center justify-center gap-2 rounded-md px-5 py-3 text-xs font-medium uppercase tracking-[0.08em] whitespace-nowrap transition-colors duration-200;
+    }
+    .btn-primary {
+        @apply bg-olive text-white hover:bg-olive-deep;
+    }
+    .btn-soft {
+        @apply bg-mist/50 text-ink hover:bg-mist;
+    }
+    .btn-light {
+        @apply bg-white text-olive hover:bg-paper;
+    }
+    .btn-clay {
+        @apply bg-clay text-white hover:bg-clay-deep;
+    }
+
+    /* Teks kecil kapital */
+    .eyebrow {
+        @apply text-[11px] font-medium uppercase tracking-[0.12em];
+    }
+
+    /* Chip / pill */
+    .chip {
+        @apply inline-flex items-center gap-2 rounded px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.08em];
+    }
+
+    /* Placeholder foto: tampil sampai file asli diletakkan di public/images */
+    .photo-placeholder {
+        position: relative;
+        overflow: hidden;
+        background:
+            radial-gradient(120% 90% at 20% 10%, rgb(255 255 255 / 0.55), transparent 55%),
+            linear-gradient(160deg, #cdbfa9 0%, #a99a82 55%, #7d705c 100%);
+    }
+    .photo-placeholder::after {
+        content: attr(data-slot);
+        position: absolute;
+        inset: auto 0 0 0;
+        padding: 0.375rem 0.625rem;
+        font-size: 10px;
+        letter-spacing: 0.04em;
+        color: rgb(255 255 255 / 0.85);
+        background: rgb(0 0 0 / 0.28);
+    }
+}
